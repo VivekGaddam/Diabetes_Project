@@ -7,31 +7,16 @@ df = pd.read_csv('diabetes.csv')
 
 
 df.head()
-
-#no of rows and cols
 df.shape
-
-#getting the statistical measures of the df
 df.describe()
 
-#no of diabetics and non-diabetics
 df['Outcome'].value_counts()
 
-print('Before dropping duplicates: ', df.shape)
 df = df.drop_duplicates()
-print('After dropping duplicates: ', df.shape)
 
-"""Check for NULL values"""
+
 
 df.isnull().sum()
-
-"""Check for missing values"""
-
-print('No of missing values in Glucose: ', df[df['Glucose'] == 0].shape[0])
-print('No of missing values in BloodPressure: ', df[df['BloodPressure'] == 0].shape[0])
-print('No of missing values in SkinThickness: ', df[df['SkinThickness'] == 0].shape[0])
-print('No of missing values in Insulin: ', df[df['Insulin'] == 0].shape[0])
-print('No of missing values in BMI: ', df[df['BMI'] == 0].shape[0])
 
 """Replace missing values with mean"""
 
@@ -86,7 +71,6 @@ g = sns.heatmap(df[top_corr_features].corr(), annot=True, cmap='RdYlGn')
 
 """Split data into X and y"""
 
-#separating the independent and dependent variables
 X = df.drop(columns='Outcome', axis=1)
 y = df['Outcome']
 print(X.head())
@@ -101,8 +85,6 @@ print(standardised_data)
 
 X = standardised_data
 y = df.Outcome
-print(X)
-print(y)
 
 """Split data into training and testing data"""
 
@@ -134,7 +116,7 @@ nb_model = GaussianNB()
 nb_model.fit(X_train, y_train)
 
 """4) Support Vector Machine(SVM)"""
-
+"**"
 from sklearn.svm import SVC
 svm_model = SVC()
 svm_model.fit(X_train, y_train)
@@ -174,8 +156,7 @@ print('Accuracy score of SVM:', round(accuracy_score(y_test, svm_preds) * 100, 2
 print('Accuracy score of Decision Tree:', round(accuracy_score(y_test, dt_preds) * 100, 2))
 print('Accuracy score of Random Forest:', round(accuracy_score(y_test, rf_preds) * 100, 2))
 
-"""Save the Model with the Highest Accuracy using pickle"""
 
 import pickle
 pickle.dump(svm_model, open('svm_model.pkl', 'wb')) #svm has the highest accuracy
-pickle.dump(scaler, open('scaler.pkl', 'wb')) #save the std scaler too
+pickle.dump(scaler, open('scaler.pkl', 'wb')) 
